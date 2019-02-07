@@ -8,13 +8,14 @@ $(document).ready(function() {
 			$.each(result, function(i, employee){
 				
 				var customerRow = '<tr>' +
-									'<td>' + employee.fullName + '</td>' +
                     				'<td>' + employee.firstName + '</td>' +
 									'<td>' + employee.lastName.toUpperCase() + '</td>' +
 									'<td>' + employee.technology + '</td>' +
 									'<td>' + employee.client + '</td>' +
 									'<td>' + employee.placeOfProject + '</td>' +
-                    				'<td>' + employee.region + '</td>' +
+                    				'<td>' + employee.workRegion + '</td>' +
+                    				'<td>' + employee.postalCode + '</td>' +
+                    				'<td>' + employee.homeRegion + '</td>' +
 								  '</tr>';
 				
 				$('#customerTable tbody').append(customerRow);
@@ -33,7 +34,7 @@ $(document).ready(function() {
 	// do Filter on View
 	$("#inputFilter").on("keyup", function() {
 	    var inputValue = $(this).val().toLowerCase();
-	    $("#customerTable tr").filter(function() {
+	    $("#customerTableBody tr").filter(function() {
 	    	$(this).toggle($(this).text().toLowerCase().indexOf(inputValue) > -1)
 	    });
 	});

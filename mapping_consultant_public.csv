@@ -1,18 +1,17 @@
-fullname;Firstname;name;technology;client;Place of project;region
-Aksel Erenberk;Aksel;Erenberk;Java;ING Belgi NV;etterbeek;Etterbeek
-Alain Wauthier;Alain;Wauthier;Java;COCOF;Schaarbeek;Schaarbeek
-Alessandro Ristuccia;Alessandro;Ristuccia;RO;Tobania;HQ;Stroombeek
-Andrei Bozga;Andrei;Bozga;Java;BNPPF;Bruxelles;BRUXELLES
-Annick Strauven;Annick;Strauven;.NET;KBC Group NV;Leuven;Leuven
-Anton Kirschhock;Anton;Kirschhock;.NET;Misc;Hasselt;Hasselt
-Anton Van Erck;Anton;Van Erck;Project Manager;Misc;Hasselt;Hasselt
-Bart Mille;Bart;Mille;Progress;Piette & Partners NV;Kortrijk;Hasselt;
-Ben Vanden Dries;Ben;Vanden Dries;.NET;Tobania;Hasselt;Hasselt
-Benjamin Goffart;Benjamin;Goffart;null;Tobania;Long term sickness;Stroombeek
-Benno Daenen;Benno;Daenen;WCM;Cities;Hasselt;Hasselt
-Bernard Soille;Bernard;Soille;COBOL;ING Belgi� NV;Etterbeek;Etterbeek
-Bert Limerkens;Bert;Limerkens;.NET;Misc;Hasselt�;Hasselt�
-Brecht Janssen;Brecht;Janssen;.NET;Cities;Hasselt�;Hasselt�
-Brent Theunckens;Brent;Theunckens;.NET;Misc;Hasselt�;Hasselt�
-Christian Kalubi Mukunya;Christian;Kalubi Mukunya;Java;LCM;Schaarbeek;Schaarbeek
-Christian Nyabeye Ngatchou;Christian;Nyabeye Ngatchou;Java;ING Lease Belgium;Etterbeek;Etterbeek
+Aksel;Erenberk;Java;ING Belgi NV;etterbeek;Etterbeek;2100
+Alain;Wauthier;Java;COCOF;Schaarbeek;Schaarbeek;1821
+Alessandro;Ristuccia;RO;Tobania;HQ;Stroombeek;2134
+Andrei;Bozga;Java;BNPPF;Bruxelles;BRUXELLES;4902
+Annick;Strauven;.NET;KBC Group NV;Leuven;Leuven;1234
+Anton;Kirschhock;.NET;Misc;Hasselt;Hasselt;2000
+Anton;Van Erck;Project Manager;Misc;Hasselt;Hasselt;3001
+Bart;Mille;Progress;Piette & Partners NV;Kortrijk;Hasselt;4002
+Ben;Vanden Dries;.NET;Tobania;Hasselt;Hasselt;5003
+Benjamin;Goffart;null;Tobania;Long term sickness;Stroombeek;2134
+Benno;Daenen;WCM;Cities;Hasselt;Hasselt;3001
+Bernard;Soille;COBOL;ING Belgie NV;Etterbeek;Etterbeek;1982
+Bert;Limerkens;.NET;Misc;Hasselt;Hasselt;3001
+Brecht;Janssen;.NET;Cities;Hasselt;Hasselt;3001
+Brent;Theunckens;.NET;Misc;Hasselt;Hasselt;2100
+Christian;Kalubi Mukunya;Java;LCM;Schaarbeek;Schaarbeek;2100
+Christian;Nyabeye Ngatchou;Java;ING Lease Belgium;Etterbeek;Etterbeek;1234

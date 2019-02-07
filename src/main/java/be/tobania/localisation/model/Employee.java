@@ -20,11 +20,8 @@ public class Employee {
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
-    @Column(name = "FULL_NAME")
-    private String fullName;
-
     @Column(name = "FIRST_NAME")
-    private String fistName;
+    private String firstName;
 
     @Column(name = "LAST_NAME")
     private String lastName;
@@ -38,7 +35,13 @@ public class Employee {
     @Column(name = "PLACE_OF_PROJECT")
     private String placeOfProject;
 
-    @Column(name = "REGION")
-    private String region;
+    @Column(name = "WORK_REGION")
+    private String workRegion;
+
+    @Column(name = "POSTAL_CODE")
+    private String postalCode;
+
+    @Column(name = "HOME_REGION")
+    private String homeRegion;
 
 }

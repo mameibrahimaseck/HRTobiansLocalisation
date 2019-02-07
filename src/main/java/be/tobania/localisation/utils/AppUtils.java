@@ -1,5 +1,6 @@
 package be.tobania.localisation.utils;
 
+import antlr.StringUtils;
 import be.tobania.localisation.model.Employee;
 
 import java.io.IOException;
@@ -22,14 +23,16 @@ public class AppUtils {
 
     private static Employee setEmployeeValues(List<String> values){
 
-        Employee employee = new Employee();
-        employee.setFullName(values.get(0));
-        employee.setFistName(values.get(1));
-        employee.setLastName(values.get(2));
-        employee.setTechnology(values.get(3));
-        employee.setClient(values.get(4));
-        employee.setPlaceOfProject(values.get(5));
-        employee.setRegion(values.get(6));
+        Employee employee = Employee.builder()
+                .firstName(values.get(0))
+                .lastName(values.get(1))
+                .technology(values.get(2))
+                .client(values.get(3))
+                .placeOfProject(values.get(4))
+                .workRegion(values.get(5))
+                .postalCode(values.get(6))
+                .homeRegion(getRegionFromPostalCode(values.get(6)))
+                .build();
 
         return employee;
     }
@@ -53,6 +56,61 @@ public class AppUtils {
         }
 
         return employees;
+    }
+
+    private static String getRegionFromPostalCode(String postalCode){
+        String region;
+        int pc = stringToInteger(postalCode);
+        if(pc == 0)
+            return "undefined";
+
+
+        if(isABelgianPostalCode(pc,PostalCodeRange.BRUSSEL.get(0),PostalCodeRange.BRUSSEL.get(1)))
+            region = "Bruxelles";
+        else if(isABelgianPostalCode(pc,PostalCodeRange.HAL_VILVORDE.get(0),PostalCodeRange.HAL_VILVORDE.get(1)))
+            region = "Hal-Vilvorde";
+        else if(isABelgianPostalCode(pc,PostalCodeRange.BRABANT_WALLON.get(0),PostalCodeRange.BRABANT_WALLON.get(1)))
+            region = "Brabant Wallon";
+        else if(isABelgianPostalCode(pc,PostalCodeRange.BRABANT_FLAMANT.get(0),PostalCodeRange.BRABANT_FLAMANT.get(1)))
+            region = "Louvain -  Overijse";
+        else if(isABelgianPostalCode(pc,PostalCodeRange.ANTWERP.get(0),PostalCodeRange.ANTWERP.get(1)))
+            region = "Anvers";
+        else if(isABelgianPostalCode(pc,PostalCodeRange.FLANDRE_OCCIDENTALE.get(0),PostalCodeRange.FLANDRE_OCCIDENTALE.get(1)))
+            region = "Bruges - Flandre Occidentale";
+        else if(isABelgianPostalCode(pc,PostalCodeRange.FLANDRE_ORIENTALE.get(0),PostalCodeRange.FLANDRE_ORIENTALE.get(1)))
+            region = "Gand - Flandre Orientale";
+        else if(isABelgianPostalCode(pc,PostalCodeRange.HAINAUT.get(0),PostalCodeRange.HAINAUT.get(1)))
+            region = "Charleroi  - Hainaut";
+        else if(isABelgianPostalCode(pc,PostalCodeRange.HAINAUT2.get(0),PostalCodeRange.HAINAUT2.get(1)))
+            region = "Mons - Hainaut(2)";
+        else if(isABelgianPostalCode(pc,PostalCodeRange.LIEGE.get(0),PostalCodeRange.LIEGE.get(1)))
+            region = "Liège";
+        else if(isABelgianPostalCode(pc,PostalCodeRange.LIMBOURG.get(0),PostalCodeRange.LIMBOURG.get(1)))
+            region = "Limbourg";
+        else if(isABelgianPostalCode(pc,PostalCodeRange.LUXEMBOURG.get(0),PostalCodeRange.LUXEMBOURG.get(1)))
+            region = "Luxembourg";
+        else if(isABelgianPostalCode(pc,PostalCodeRange.NAMUR.get(0),PostalCodeRange.NAMUR.get(1)))
+            region = "Namur";
+        else
+            region = "not Belgian postal code";
+
+
+        return region;
+    }
+
+    private static boolean isABelgianPostalCode(int postalcode, int from,int to){
+        return postalcode >= from && postalcode<= to;
+    }
+
+    private static int stringToInteger(String str){
+        if(str.equals("undefined"))
+            return 0;
+        try {
+            return Integer.valueOf(str);
+        }catch (Exception e){
+            System.out.println("ERROR transforming the postal code "+str +" to Integer");
+            return 0;
+        }
     }
 
 }
