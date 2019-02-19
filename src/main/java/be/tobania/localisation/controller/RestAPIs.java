@@ -29,18 +29,8 @@ public class RestAPIs {
 	
 	@PostConstruct
     public void initIt() throws Exception {
-        /*custStores.put(Long.valueOf(1), new Customer(new Long(1), "Jack", 25, new Address("NANTERRE CT", "77471")));
-        custStores.put(Long.valueOf(2), new Customer(new Long(2), "Mary", 37, new Address("W NORMA ST", "77009")));
-        custStores.put(Long.valueOf(3), new Customer(new Long(3), "Peter", 18, new Address("S NUGENT AVE", "77571")));
-        custStores.put(Long.valueOf(4), new Customer(new Long(4), "Amos", 23, new Address("E NAVAHO TRL", "77449")));
-        custStores.put(Long.valueOf(5), new Customer(new Long(5), "Craig", 45, new Address("AVE N", "77587")));
-        custStores.put(Long.valueOf(6), new Customer(new Long(6), "Aries", 19, new Address("Broadway/Reade St, New York", "10007")));
-        custStores.put(Long.valueOf(7), new Customer(new Long(7), "Brice", 39, new Address("Columbus, OH 43215, USA", "43215")));
-        custStores.put(Long.valueOf(8), new Customer(new Long(8), "Cage", 24, new Address("Plano, TX 75074", "75074")));
-        custStores.put(Long.valueOf(9), new Customer(new Long(9), "Ellen", 41, new Address("Modesto, CA 95354", "95354")));
-        custStores.put(Long.valueOf(10), new Customer(new Long(10), "Brice", 32, new Address("Atlanta, GA 30334", "30334")));*/
 
-        employeeService.saveEmployees(AppUtils.readFromCSVFile("./mapping_consultant_public.csv"));
+        employeeService.saveEmployees(AppUtils.readFromCSVFile("./mapping_consultant_public.csv", employeeService));
     }
 	 
 	/*@GetMapping(value = "/all")

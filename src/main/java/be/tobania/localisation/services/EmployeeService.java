@@ -9,4 +9,5 @@ public interface EmployeeService {
     void saveEmployee(Employee employee);
     void saveEmployees(List<Employee> employees);
     List<Employee> findAll();
+    void truncateEmployeeTable();
 }

@@ -4,10 +4,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public interface PostalCodeRange {
-   List<Integer> BRUSSEL = Arrays.asList(1000,1299);
-   List<Integer> BRABANT_WALLON = Arrays.asList(1300,1499);
-   List<Integer> BRABANT_FLAMANT = Arrays.asList(3000,3499);
-   List<Integer> HAL_VILVORDE = Arrays.asList(1500,1999);
+
+    List<Integer> BRUSSEL = Arrays.asList(1000,1299);
+    List<Integer> BRABANT_WALLON = Arrays.asList(1300,1499);
+    List<Integer> BRABANT_FLAMANT = Arrays.asList(3000,3499);
+    List<Integer> HAL_VILVORDE = Arrays.asList(1500,1999);
     List<Integer> ANTWERP = Arrays.asList(2000,2999);
     List<Integer> LIMBOURG = Arrays.asList(3500,3999);
     List<Integer> LIEGE = Arrays.asList(4000,4999);

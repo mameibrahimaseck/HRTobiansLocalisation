@@ -35,4 +35,10 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeRepository.findAll().forEach(employees :: add);
         return employees;
     }
+
+    @Override
+    @Transactional
+    public void truncateEmployeeTable() {
+        employeeRepository.truncateMyTable();
+    }
 }

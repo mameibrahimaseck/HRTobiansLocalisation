@@ -1,12 +1,15 @@
 package be.tobania.localisation.utils;
 
-import antlr.StringUtils;
 import be.tobania.localisation.model.Employee;
+import be.tobania.localisation.services.EmployeeService;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,8 +18,8 @@ import java.util.stream.Stream;
 public class AppUtils {
 
 
-    public static List<Employee> readFromCSVFile(String filePath){
-        List<Employee> employees = readRecords(filePath) ;
+    public static List<Employee> readFromCSVFile(String filePath, EmployeeService service){
+        List<Employee> employees = readRecords(filePath, service) ;
         return employees;
 
     }
@@ -37,9 +40,17 @@ public class AppUtils {
         return employee;
     }
 
-    private static List<Employee> readRecords(String path) {
+    private static List<Employee> readRecords(String path, EmployeeService service) {
 
         List<Employee> employees = new ArrayList<>();
+
+        Path source = Paths.get(path);
+
+        if(Files.exists(source)){
+
+            System.out.println("CSV file exist = "+Files.exists(source));
+
+            service.truncateEmployeeTable();
 
         try (Stream<String> stream = Files.lines(Paths.get(path), StandardCharsets.ISO_8859_1)) {
 
@@ -49,10 +60,11 @@ public class AppUtils {
                 employees.add(employee);
             });
 
-            //stream.forEach(System.out::println);
+            renameSCVFile(path);
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
+        }
         }
 
         return employees;
@@ -103,13 +115,28 @@ public class AppUtils {
     }
 
     private static int stringToInteger(String str){
-        if(str.equals("undefined"))
+        String result = str.replaceAll("\\s","");
+        if(result.equals("undefined"))
             return 0;
         try {
-            return Integer.valueOf(str);
+            return Integer.valueOf(result);
         }catch (Exception e){
             System.out.println("ERROR transforming the postal code "+str +" to Integer");
             return 0;
+        }
+    }
+
+    private static void renameSCVFile(String path){
+        LocalDate ldt = LocalDate.now();
+        Path source  = Paths.get(path);
+
+        try {
+            Files.move(source, source.resolveSibling("mapping_consultant_public_"+ldt+".csv"));
+        } catch(FileAlreadyExistsException fae) {
+            fae.printStackTrace();
+        } catch (IOException e) {
+            // something else went wrong
+            e.printStackTrace();
         }
     }
 
