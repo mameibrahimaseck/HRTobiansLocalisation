@@ -1,7 +1,10 @@
 package be.tobania.localisation.utils;
 
+import be.tobania.localisation.model.Address;
 import be.tobania.localisation.model.Employee;
 import be.tobania.localisation.services.EmployeeService;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -84,17 +87,17 @@ public class AppUtils {
         else if(isABelgianPostalCode(pc,PostalCodeRange.BRABANT_WALLON.get(0),PostalCodeRange.BRABANT_WALLON.get(1)))
             region = "Brabant Wallon";
         else if(isABelgianPostalCode(pc,PostalCodeRange.BRABANT_FLAMANT.get(0),PostalCodeRange.BRABANT_FLAMANT.get(1)))
-            region = "Louvain -  Overijse";
+            region = "Leuven-Overijse";
         else if(isABelgianPostalCode(pc,PostalCodeRange.ANTWERP.get(0),PostalCodeRange.ANTWERP.get(1)))
             region = "Anvers";
         else if(isABelgianPostalCode(pc,PostalCodeRange.FLANDRE_OCCIDENTALE.get(0),PostalCodeRange.FLANDRE_OCCIDENTALE.get(1)))
-            region = "Bruges - Flandre Occidentale";
+            region = "Bruges";
         else if(isABelgianPostalCode(pc,PostalCodeRange.FLANDRE_ORIENTALE.get(0),PostalCodeRange.FLANDRE_ORIENTALE.get(1)))
-            region = "Gand - Flandre Orientale";
+            region = "Gand";
         else if(isABelgianPostalCode(pc,PostalCodeRange.HAINAUT.get(0),PostalCodeRange.HAINAUT.get(1)))
-            region = "Charleroi  - Hainaut";
+            region = "Charleroi";
         else if(isABelgianPostalCode(pc,PostalCodeRange.HAINAUT2.get(0),PostalCodeRange.HAINAUT2.get(1)))
-            region = "Mons - Hainaut(2)";
+            region = "Mons";
         else if(isABelgianPostalCode(pc,PostalCodeRange.LIEGE.get(0),PostalCodeRange.LIEGE.get(1)))
             region = "Liège";
         else if(isABelgianPostalCode(pc,PostalCodeRange.LIMBOURG.get(0),PostalCodeRange.LIMBOURG.get(1)))
@@ -138,6 +141,79 @@ public class AppUtils {
             // something else went wrong
             e.printStackTrace();
         }
+    }
+
+    public static List<Double> getCordinates(String region){
+        if(region.equalsIgnoreCase("Bruxelles"))
+            return Cordonates.BRUSSEL;
+        else if (region.equalsIgnoreCase("Anvers"))
+            return Cordonates.ANTWERP;
+        else if (region.equalsIgnoreCase("Liège"))
+            return Cordonates.LIEGE;
+        else if (region.equalsIgnoreCase("Luxembourg"))
+            return Cordonates.LUXEMBOURG;
+        else if (region.equalsIgnoreCase("Namur"))
+            return Cordonates.NAMUR;
+        else if (region.equalsIgnoreCase("Limbourg"))
+            return Cordonates.LIMBOURG;
+        else if (region.equalsIgnoreCase("Hal-Vilvorde"))
+            return Cordonates.HAL_VILVORDE;
+        else if (region.equalsIgnoreCase("Brabant Wallon"))
+            return Cordonates.BRABANT_WALLON;
+        else if (region.equalsIgnoreCase("Leuven-Overijse"))
+            return Cordonates.BRABANT_FLAMANT;
+        else if (region.equalsIgnoreCase("Bruges"))
+            return Cordonates.FLANDRE_OCCIDENTALE;
+        else if (region.equalsIgnoreCase("Gand"))
+            return Cordonates.FLANDRE_ORIENTALE;
+        else if (region.equalsIgnoreCase("Charleroi"))
+            return Cordonates.HAINAUT;
+        else if (region.equalsIgnoreCase("Mons"))
+            return Cordonates.HAINAUT2;
+        else
+            return new ArrayList<>();
+
+    }
+
+    public static List<Employee> getEmployeeByRegion(List<Employee> employees, String region){
+
+        List<Employee> result = new ArrayList<>();
+
+        employees.forEach(e -> {
+            if(e.getHomeRegion().equalsIgnoreCase(region))
+                result.add(e);
+        });
+
+        return result;
+    }
+
+    public static Address getPopupMessageByRegion(List<Employee> employees, String region){
+
+        StringBuilder result = new StringBuilder();
+
+        List<Employee> employeeList = getEmployeeByRegion(employees,region);
+        result.append("<b>In "+region+" we have "+employeeList.size()+"</b><br>");
+
+        employeeList.forEach(e -> result.append(e.getFirstName()+" "+e.getLastName()+"<br>"));
+
+        Address address = Address.builder().region(region)
+                .longitude(getCordinates(region).get(0))
+                .latitude(getCordinates(region).get(1))
+                .info(result.toString())
+                .build();
+
+        return address;
+
+    }
+
+    public static List<Address> getAllRegionInfos(List<Employee> employees, List<String> regions){
+
+        List<Address> addresses = new ArrayList<>();
+
+        regions.forEach(e -> addresses.add(getPopupMessageByRegion(employees,e)));
+
+        return addresses;
+
     }
 
 }

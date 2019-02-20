@@ -1,48 +1,1 @@
-<!DOCTYPE HTML>
- 
-<html>
-<head>
-      <title>Tobania HTL</title>
-      <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	  <script src="/js/jqueryScript.js"></script>
-	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-</head>
- 
-<body>
-<div class="container">
-<div>
-	<img src="http://localhost:8080/images/logo.png" height="132" width="382"/>
-</div>
-<div class="h1">
-	<h1>HR Tobians Localisation</h1>
-</div>
-		<h2>Filter Table</h2>
-		<div class="row col-md-7 ">
-			<div style="margin-bottom:20px; padding:10px; background-color:#336699; color:white;">
-		  	<p>Type some text to search the table for <strong>Name</strong>, <strong>Technology</strong>, <strong>Region</strong>, <strong>Place of work</strong>:</p>
-		  	<input class="form-control" id="inputFilter" type="text" placeholder="Search.." />
-		  	</div>
-			<table id="customerTable" class="table table-bordered table-hover table-responsive">
-				<thead>
-					<tr>
-						<th>First Name</th>
-						<th>Last Name</th>
-						<th>Technology</th>
-						<th>Client</th>
-						<th>Place of work</th>
-						<th>Work Region</th>
-                        <th>Postal code</th>
-                        <th>Home region</th>
-					</tr>
-				</thead>
-				<tbody id="customerTableBody">
-				</tbody>
-			</table>
-		</div>
-	</div>
-	
-</body>
-</html>
+<!DOCTYPE HTML> <html><head>      <title>Tobania HTL</title>      <meta charset="utf-8" />      <meta name="viewport" content="width=device-width, initial-scale=1" />      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>	  <script src="/js/jqueryScript.js"></script>	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>	<style>		h1 {			border-left: 6px solid aqua;			background-color: lightblue;		}	</style></head> <body><div class="container"><div>	<img src="http://localhost:8080/images/logo.png" height="132" width="382"/></div><div>	<h1>HR Tobians Localisation</h1></div>		<h2>Filter Table</h2>		<div class="row col-md-7 ">			<div style="margin-bottom:20px; padding:10px; background-color:#336699; color:white;">		  	<p>Type some text to search the table for <strong>Name</strong>, <strong>Technology</strong>, <strong>Region</strong>, <strong>Place of work</strong>:</p>		  	<input class="form-control" id="inputFilter" type="text" placeholder="Search.." />		  	</div>			<table id="customerTable" class="table table-bordered table-hover table-responsive">				<thead>					<tr>						<th>First Name</th>						<th>Last Name</th>						<th>Technology</th>						<th>Client</th>						<th>Place of work</th>						<th>Work Region</th>                        <th>Postal code</th>                        <th>Home region</th>					</tr>				</thead>				<tbody id="customerTableBody">				</tbody>			</table>		</div>	</div>	</body></html>

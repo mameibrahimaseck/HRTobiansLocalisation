@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -25,39 +24,17 @@ public class WebController {
 
     @GetMapping(value="/map")
     public String getMapPage(Model model){
-        List<Employee> employees = employeeService.findAll();
+       // List<Employee> employees = employeeService.findAll();
 
-        model.addAttribute("anvers", getPopupMessageByRegion(employees, "Anvers"));
-        model.addAttribute("bxl", getPopupMessageByRegion(employees, "Bruxelles"));
-        model.addAttribute("hasselt", getPopupMessageByRegion(employees, "Hasselt"));
+        //model.addAttribute("anvers", AppUtils.getPopupMessageByRegion(employees, "Anvers"));
+        //model.addAttribute("bxl", AppUtils.getPopupMessageByRegion(employees, "Bruxelles"));
+        //model.addAttribute("hasselt", AppUtils.getPopupMessageByRegion(employees, "Hasselt"));
 
 	    return "mapPage";
     }
 
-    private List<Employee> getEmployeeByRegion(List<Employee> employees, String region){
-        this.employees = employees;
-        this.region = region;
-        List<Employee> result = new ArrayList<>();
 
-	    employees.forEach(e -> {
-	        if(e.getHomeRegion().equalsIgnoreCase(region))
-	            result.add(e);
-        });
 
-	    return result;
-    }
-
-    private String getPopupMessageByRegion(List<Employee> employees, String region){
-	    StringBuilder result = new StringBuilder();
-
-        List<Employee> employeeList = getEmployeeByRegion(employees,region);
-        result.append("<b>In "+region+" we have "+employeeList.size()+"<b><br>");
-
-        employeeList.forEach(e -> result.append(e.getFirstName()+" "+e.getLastName()+"<br>"));
-
-	    return result.toString();
-
-    }
 
 
 }
