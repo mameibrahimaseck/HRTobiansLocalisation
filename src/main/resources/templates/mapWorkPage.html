@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <title>Tobians Map work Localisation</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg==" crossorigin=""></script>
+    <style>
+
+        h1 {
+            border-left: 6px solid aqua;
+            background-color: lightblue;
+        }
+        .myButton {
+            -moz-box-shadow:inset 0px 1px 0px 0px #276873;
+            -webkit-box-shadow:inset 0px 1px 0px 0px #276873;
+            box-shadow:inset 0px 1px 0px 0px #276873;
+            background-color:#599bb3;
+            -moz-border-radius:6px;
+            -webkit-border-radius:6px;
+            border-radius:6px;
+            border:1px solid #29668f;
+            display:inline-block;
+            cursor:pointer;
+            color:#ffffff;
+            font-family:Arial;
+            font-size:15px;
+            font-weight:bold;
+            padding:6px 24px;
+            text-decoration:none;
+            text-shadow:0px 1px 0px #3d768a;
+        }
+
+        .myButton:hover {
+            background-color:lightblue;
+        }
+        .myButton:active {
+            position:relative;
+            top:1px;
+        }
+    </style>
+
+
+</head>
+<body style="margin: 20px">
+
+<div>
+    <img src="http://localhost:8080/images/logo.png" height="132" width="382"/>
+</div>
+<div align="right">
+    <span>
+            <a class="myButton" th:href="@{/}">Home</a>
+       </span>
+    <span>
+            <a class="myButton" th:href="@{/homeMap}" >Home-map</a>
+       </span>
+</div>
+<div>
+
+    <h1>Tobians Work Localisation</h1>
+</div>
+
+<div id="mapid" style="width: 100%; height: 800px;"></div>
+
+<script>
+
+
+    var mymap = L.map('mapid').setView([50.838648, 4.356806], 9);
+
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+        maxZoom: 18,
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        id: 'mapbox.streets'
+    }).addTo(mymap);
+
+    var request = new XMLHttpRequest();
+    request.open('GET', 'http://localhost:8080/api/localisation/workplace', true);
+    request.onload = function (){
+        var data = JSON.parse(this.response);
+        if (request.status >= 200) {
+            data.forEach(function(customer) {
+               /*L.circle([address.longitude, address.latitude], 1000, {
+                    color: 'red',
+                    fillColor: '#1035ff',
+                    fillOpacity: 0.5
+                }).addTo(mymap).bindPopup(address.info);*/
+               L.marker([customer.longitude, customer.latitude]).addTo(mymap).bindPopup(customer.employees, {maxHeight: 200});
+        });
+        } else {
+            //app.appendChild(errorMessage);
+        }
+        }
+    request.send();
+
+
+</script>
+
+
+
+</body>
+</html>

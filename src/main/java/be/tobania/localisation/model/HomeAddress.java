@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 @Data
 @Builder
-public class Address {
+public class HomeAddress {
 
 	private String region;
 	private Double longitude;

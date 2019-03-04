@@ -1,17 +1,18 @@
 package be.tobania.localisation.repositories;
 
-import be.tobania.localisation.model.Employee;
+import be.tobania.localisation.model.Customer;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import javax.transaction.Transactional;
-
 @Repository
-public interface EmployeeRepository extends CrudRepository<Employee, Long> {
+public interface CustomerRepository extends CrudRepository<Customer, Long> {
+
+    Customer findCustomerByName(String name);
 
     @Modifying
-    @Query(value = "truncate table TOBANIA_EMPLOYEE", nativeQuery = true)
-    void truncateMyTable();
+    @Query(value = "truncate table CLIENT", nativeQuery = true)
+    void truncateTable();
+
 }

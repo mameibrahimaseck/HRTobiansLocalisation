@@ -1,19 +1,18 @@
 package be.tobania.localisation.controller;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
-import be.tobania.localisation.model.Address;
+import be.tobania.localisation.model.HomeAddress;
+import be.tobania.localisation.model.WorkAddress;
+import be.tobania.localisation.repositories.CustomerRepository;
+import be.tobania.localisation.repositories.EmployeeRepository;
+import be.tobania.localisation.services.CustomerService;
 import be.tobania.localisation.services.EmployeeService;
 import be.tobania.localisation.utils.AppUtils;
 import be.tobania.localisation.model.Employee;
 import be.tobania.localisation.utils.Regions;
-import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,11 +28,21 @@ public class RestAPIs {
 
 	@Autowired
     EmployeeService employeeService;
+
+	@Autowired
+	EmployeeRepository employeeRepository;
+
+	@Autowired
+	CustomerRepository customerRepository;
+
+	@Autowired
+	CustomerService customerService;
 	
 	@PostConstruct
     public void initIt() throws Exception {
 
-        employeeService.saveEmployees(AppUtils.readFromCSVFile("./mapping_consultant_public.csv", employeeService));
+        employeeService.saveEmployees(AppUtils.readFromCSVFile("./mapping_consultant_public.csv", employeeService,new Employee()));
+        customerService.saveList(AppUtils.readFromCSVFile("./clients.csv", customerService, new Customer()));
     }
 
 
@@ -46,9 +55,15 @@ public class RestAPIs {
 
 
     @GetMapping(value="/mapInfos")
-        public List<Address> getRegionsAndCordinates(){
+        public List<HomeAddress> getRegionsAndCordinates(){
             List<Employee> employees = employeeService.findAll();
             return AppUtils.getAllRegionInfos(employees, Regions.REGIONS);
+    }
+
+    @GetMapping(value="/workplace")
+    public List<WorkAddress> getWorkAddresses(){
+        List<Employee> employees = employeeService.findAll();
+        return AppUtils.getTobiansWorkAddress(employees,customerService);
     }
 
 

@@ -1,30 +1,44 @@
 package be.tobania.localisation.utils;
 
-import be.tobania.localisation.model.Address;
+import be.tobania.localisation.model.HomeAddress;
+import be.tobania.localisation.model.Customer;
 import be.tobania.localisation.model.Employee;
+import be.tobania.localisation.model.WorkAddress;
+import be.tobania.localisation.services.CustomerService;
 import be.tobania.localisation.services.EmployeeService;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class AppUtils {
+
+    static FileUtils fileUtilsEmployee = new FileUtils<Employee>();
+    static FileUtils fileUtilsCustomer = new FileUtils<Customer>();
 
 
     public static List<Employee> readFromCSVFile(String filePath, EmployeeService service){
         List<Employee> employees = readRecords(filePath, service) ;
         return employees;
 
+    }
+
+    public static List<Employee> readFromCSVFile(String path, EmployeeService repository, Employee employee){
+        List<Employee> employees = readRecords(path,repository,employee);
+        return employees;
+    }
+
+    public static List<Customer> readFromCSVFile(String path, CustomerService repository, Customer customer){
+        List<Customer> customers = readRecords(path,repository,customer);
+        return customers;
     }
 
     private static Employee setEmployeeValues(List<String> values){
@@ -63,7 +77,7 @@ public class AppUtils {
                 employees.add(employee);
             });
 
-            renameSCVFile(path);
+            //renameSCVFile(path);
 
         } catch (IOException ioe) {
             ioe.printStackTrace();
@@ -73,7 +87,41 @@ public class AppUtils {
         return employees;
     }
 
-    private static String getRegionFromPostalCode(String postalCode){
+    private static List<Employee> readRecords(String path, EmployeeService service, Employee employee){
+
+        List<Employee> employees = new ArrayList<>();
+
+        Path source = Paths.get(path);
+
+        if(Files.exists(source)) {
+
+            System.out.println("CSV file exist = " + Files.exists(source));
+
+            service.truncateEmployeeTable();
+            employees = fileUtilsEmployee.readFileRecords(path, employee);
+        }
+
+        return employees;
+    }
+
+    private static List<Customer> readRecords(String path, CustomerService repository, Customer customer){
+
+        List<Customer> customers = new ArrayList<>();
+
+        Path source = Paths.get(path);
+
+        if(Files.exists(source)) {
+
+            System.out.println("CSV file exist = " + Files.exists(source));
+
+            repository.truncateTable();
+            customers = fileUtilsCustomer.readFileRecords(path,customer);
+        }
+
+        return customers;
+    }
+
+    public static String getRegionFromPostalCode(String postalCode){
         String region;
         int pc = stringToInteger(postalCode);
         if(pc == 0)
@@ -129,19 +177,19 @@ public class AppUtils {
         }
     }
 
-    private static void renameSCVFile(String path){
+   /* private static void renameSCVFile(String path){
         LocalDate ldt = LocalDate.now();
         Path source  = Paths.get(path);
 
         try {
-            Files.move(source, source.resolveSibling("mapping_consultant_public_"+ldt+".csv"));
+            Files.move(source, source.resolveSibling(source.getFileName().toString()+ldt+".csv"));
         } catch(FileAlreadyExistsException fae) {
             fae.printStackTrace();
         } catch (IOException e) {
             // something else went wrong
             e.printStackTrace();
         }
-    }
+    }*/
 
     public static List<Double> getCordinates(String region){
         if(region.equalsIgnoreCase("Bruxelles"))
@@ -187,7 +235,7 @@ public class AppUtils {
         return result;
     }
 
-    public static Address getPopupMessageByRegion(List<Employee> employees, String region){
+    public static HomeAddress getPopupMessageByRegion(List<Employee> employees, String region){
 
         StringBuilder result = new StringBuilder();
 
@@ -196,7 +244,7 @@ public class AppUtils {
 
         employeeList.forEach(e -> result.append(e.getFirstName()+" "+e.getLastName()+"<br>"));
 
-        Address address = Address.builder().region(region)
+        HomeAddress address = HomeAddress.builder().region(region)
                 .longitude(getCordinates(region).get(0))
                 .latitude(getCordinates(region).get(1))
                 .info(result.toString())
@@ -206,14 +254,51 @@ public class AppUtils {
 
     }
 
-    public static List<Address> getAllRegionInfos(List<Employee> employees, List<String> regions){
+    public static List<HomeAddress> getAllRegionInfos(List<Employee> employees, List<String> regions){
 
-        List<Address> addresses = new ArrayList<>();
+        List<HomeAddress> addresses = new ArrayList<>();
 
         regions.forEach(e -> addresses.add(getPopupMessageByRegion(employees,e)));
 
         return addresses;
 
+    }
+
+    private static Map<String, List<Employee>> groupByWorkPlace(List<Employee> employees){
+        return employees.stream().collect(Collectors.groupingBy(Employee::getClient));
+    }
+
+    public static List<WorkAddress> getTobiansWorkAddress(List<Employee> employees, CustomerService service){
+        List<WorkAddress> workAddresses = new ArrayList<>();
+
+        Map<String, List<Employee>> stringListMap = groupByWorkPlace(employees);
+
+        stringListMap.forEach((k, v) -> {
+            //System.out.println("key :" +k+" values : "+ v);
+            Customer customer = service.findByName(k);
+
+            if(null != customer && null != customer.getName() && !customer.getName().isEmpty()){
+            WorkAddress workAddress = new WorkAddress();
+            workAddress.setLatitude(customer.getLatitude());
+            workAddress.setLongitude(customer.getLongitude());
+            workAddress.setEmployees(getStringFromList(k,v));
+
+            workAddresses.add(workAddress);
+            }
+        });
+
+        return workAddresses;
+    }
+
+    private static String getStringFromList(String str, List<Employee> employees){
+
+        StringBuilder result = new StringBuilder();
+        result.append("<b> Tobians working in "+str+"</b><br>");
+        employees.forEach(e -> {
+            result.append(e.getFirstName()+" "+e.getLastName()+"<br>");
+        });
+
+        return result.toString();
     }
 
 }

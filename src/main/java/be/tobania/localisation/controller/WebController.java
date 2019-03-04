@@ -22,18 +22,15 @@ public class WebController {
         return "index";
     }
 
-    @GetMapping(value="/map")
-    public String getMapPage(Model model){
-       // List<Employee> employees = employeeService.findAll();
-
-        //model.addAttribute("anvers", AppUtils.getPopupMessageByRegion(employees, "Anvers"));
-        //model.addAttribute("bxl", AppUtils.getPopupMessageByRegion(employees, "Bruxelles"));
-        //model.addAttribute("hasselt", AppUtils.getPopupMessageByRegion(employees, "Hasselt"));
-
-	    return "mapPage";
+    @GetMapping(value="/homeMap")
+    public String getHomeMapPage(){
+	    return "mapHomePage";
     }
 
-
+    @GetMapping(value="/workMap")
+    public String getWorkMapPage(){
+        return "mapWorkPage";
+    }
 
 
 
